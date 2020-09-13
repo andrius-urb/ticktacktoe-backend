@@ -19,3 +19,18 @@ Route::get('test', function () {
         'test' => '12345'
     ], 200);
 });
+
+Route::get('actions', [
+    'uses'  =>  'ActionController@get',
+    'as'    =>  'action.get'
+]);
+
+Route::post('action', [
+    'uses'  =>  'ActionController@insert',
+    'as'    =>  'action.post'
+]);
+
+Route::delete('actions', [
+    'uses'  =>  'ActionController@delete',
+    'as'    =>  'action.delete'
+]);
