@@ -10,7 +10,7 @@ class ActionController extends Controller
 {
     public function get()
     {
-        $actions = Action::get();
+        $actions = Action::get(['id', 'player', 'row', 'column']);
         return response()->json($actions, 200);
     }
 
