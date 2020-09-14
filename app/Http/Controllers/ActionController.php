@@ -42,6 +42,13 @@ class ActionController extends Controller
             }
         }
 
+        if ($this->checkWin(true)) {
+            return response()->json([
+                'error'     =>  'Game ended.',
+                'errorType' =>  'GAME_ENDED'
+            ], 500);
+        }
+
         /**
          * Checking if field is used
          */
@@ -53,6 +60,8 @@ class ActionController extends Controller
             ], 500);
         }
 
+
+
         $action = new Action;
         $action->player = $request->player;
         $action->row    = $request->row;
@@ -61,7 +70,11 @@ class ActionController extends Controller
         return $this->checkWin();
     }
 
-    public function checkWin()
+    /**
+     * Function for win check.
+     * If $justReturn = true, then just returns true if there is winner or cross-win, and false if there is no winner.
+     */
+    public function checkWin($justReturn = false)
     {
         $actions = Action::get();
         $gameBoard = array(
@@ -105,6 +118,9 @@ class ActionController extends Controller
                  * Winner would be that one, which was checked last time by loop and defined by variable $checkPlayer.
                  * Returning winner.
                  */
+                if ($justReturn)
+                    return true;
+
                 return response()->json([
                     'winner'    =>  $checkPlayer,
                 ], 200);
@@ -137,6 +153,9 @@ class ActionController extends Controller
                  * Winner would be that one, which was checked last time by loop and defined by variable $checkPlayer.
                  * Returning winner.
                  */
+                if ($justReturn)
+                    return true;
+
                 return response()->json([
                     'winner'    =>  $checkPlayer,
                 ], 200);
@@ -154,6 +173,9 @@ class ActionController extends Controller
                     $result = $result && $gameBoard[$b][$c] === $checkPlayer;
                 }
                 if ($result) {
+                    if ($justReturn)
+                        return true;
+
                     return response()->json([
                         'winner'    =>  $checkPlayer,
                     ], 200);
@@ -164,6 +186,9 @@ class ActionController extends Controller
                     $result = $result && $gameBoard[$c][$b] === $checkPlayer;
                 }
                 if ($result) {
+                    if ($justReturn)
+                        return true;
+
                     return response()->json([
                         'winner'    =>  $checkPlayer,
                     ], 200);
@@ -183,10 +208,16 @@ class ActionController extends Controller
             }
         }
         if ($foundEmpty == 0) {
+            if ($justReturn)
+                return true;
+
             return response()->json([
                 'winner'    =>  ' ',
             ], 200);
         }
+
+        if ($justReturn)
+            return false;
 
         return response()->json([
             'noWinner'  =>  true
