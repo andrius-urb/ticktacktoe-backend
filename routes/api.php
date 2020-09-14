@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', function () {
-    return response()->json([
-        'test' => '12345'
-    ], 200);
-});
-
 Route::get('actions', [
     'uses'  =>  'ActionController@get',
     'as'    =>  'action.get'
@@ -33,4 +27,9 @@ Route::post('action', [
 Route::delete('actions', [
     'uses'  =>  'ActionController@delete',
     'as'    =>  'action.delete'
+]);
+
+Route::get('check', [
+    'uses'  =>  'ActionController@checkWin',
+    'as'    =>  'action.checkwin'
 ]);
